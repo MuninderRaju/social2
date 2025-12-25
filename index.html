@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TET Paper-2 Social Mock Test - Part 2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #e1f5fe; padding: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #0288d1, #03a9f4); color: white; padding: 25px; text-align: center; }
+        .timer-bar { background: #b3e5fc; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #81d4fa; position: sticky; top: 0; z-index: 100; }
+        .quiz-body { padding: 25px; }
+        .question-card { margin-bottom: 30px; padding: 20px; border: 1px solid #eee; border-radius: 10px; background: #fff; border-left: 5px solid #0288d1; }
+        .question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: #333; }
+        .option-item { margin-bottom: 10px; }
+        .option-item label { display: block; padding: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .option-item label:hover { background: #e1f5fe; border-color: #0288d1; }
+        #submit-btn { width: 100%; padding: 15px; background: #0288d1; color: white; border: none; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+        #result-section { display: none; padding: 30px; text-align: center; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; background: #0288d1; color: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 20px auto; font-weight: bold; }
+        .review-card { padding: 20px; margin-bottom: 20px; border-radius: 10px; text-align: left; border: 1px solid #ddd; }
+        .correct-card { border-left: 5px solid #28a745; background: #f4fff6; }
+        .wrong-card { border-left: 5px solid #dc3545; background: #fff5f5; }
+        .footer { background: #333; color: white; padding: 20px; text-align: center; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>TET Paper-2: Social Studies</h1>
+        <p>Part 2: శిలావరణం - జలావరణం - వాతావరణం | Spheres of Earth</p>
+    </div>
+
+    <div class="timer-bar">
+        <div id="timer" style="font-weight: bold; color: #01579b; font-size: 1.2rem;">Time Left: 30:00</div>
+        <div id="q-counter">ప్రశ్నలు/Questions: 30</div>
+    </div>
+
+    <div class="quiz-body" id="quiz-area">
+        <form id="quizForm">
+            <div id="questions-container"></div>
+            <button type="button" id="submit-btn" onclick="submitQuiz()">Submit Results / ఫలితాలు</button>
+        </form>
+    </div>
+
+    <div id="result-section">
+        <h2 style="color: #0288d1;">Geography Part 2 Completed!</h2>
+        <div class="score-circle" id="score-val">0%</div>
+        <p id="marks-summary" style="margin-bottom: 20px; font-size: 1.2rem;"></p>
+        <div id="review-container"></div>
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor:pointer; background:#333; color:white; border:none; border-radius:5px;">Restart Quiz</button>
+    </div>
+
+    <div class="footer">
+        <p><strong>Prepared by: A Muninder Raju</strong></p>
+        <p>GHM CHINCHOLI B, District Nirmal</p>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "భూమిపై గల మొత్తం నీటిలో సముద్రాలలో ఉన్న నీటి శాతం ఎంత? | What percentage of Earth's water is in the oceans?", options: ["71%", "97%", "3%", "2.5%"], correct: 1 },
+        { q: "వాతావరణంలో అత్యధికంగా ఉండే వాయువు ఏది? | Which is the most abundant gas in the atmosphere?", options: ["ఆక్సిజన్ | Oxygen", "నైట్రోజన్ | Nitrogen", "కార్బన్ డయాక్సైడ్", "ఆర్గాన్"], correct: 1 },
+        { q: "భూకంపాల తీవ్రతను కొలిచే పరికరం ఏది? | What instrument is used to measure the intensity of earthquakes?", options: ["బారోమీటర్", "సీస్మోగ్రాఫ్ | Seismograph", "హైగ్రోమీటర్", "అనిమోమీటర్"], correct: 1 },
+        { q: "వాతావరణంలోని ఏ పొరలో ఓజోన్ పొర ఉంటుంది? | In which layer of the atmosphere is the Ozone layer found?", options: ["ట్రోపో ఆవరణం", "స్ట్రాటో ఆవరణం | Stratosphere", "మెసో ఆవరణం", "ఎక్సో ఆవరణం"], correct: 1 },
+        { q: "సముద్ర ప్రవాహాలు ఏర్పడటానికి ప్రధాన కారణం? | Primary reason for the formation of ocean currents?", options: ["పవనాలు | Winds", "సముద్ర నీటి సాంద్రత", "భూ భ్రమణం", "పైవన్నీ | All of the above"], correct: 3 },
+        { q: "ప్రపంచంలో అత్యంత లోతైన ప్రాంతం 'మారియానా ట్రెంచ్' ఏ మహాసముద్రంలో ఉంది? | Mariana Trench is located in which ocean?", options: ["అట్లాంటిక్", "పసిఫిక్ | Pacific", "హిందూ", "ఆర్కిటిక్"], correct: 1 },
+        { q: "భూమి నుండి పైకి వెళ్లే కొద్దీ ఉష్ణోగ్రత ఏమవుతుంది? | As we go up from the Earth's surface, the temperature?", options: ["పెరుగుతుంది | Increases", "తగ్గుతుంది | Decreases", "మారదు", "మొదట పెరిగి తర్వాత తగ్గుతుంది"], correct: 1 },
+        { q: "శీతోష్ణస్థితి అంశాలలో ఏది తక్కువ కాలం మారుతుంటుంది? | Which climate element changes in short duration?", options: ["శీతోష్ణస్థితి | Climate", "వాతావరణం | Weather", "ఋతువులు", "పీడనం"], correct: 1 },
+        { q: "భూమి లోపలి నుండి వచ్చే వేడి ద్రవాన్ని ఉపరితలంపై ఏమంటారు? | What is the hot liquid called when it reaches Earth's surface?", options: ["మాగ్మా | Magma", "లావా | Lava", "శిలలు", "గంధకం"], correct: 1 },
+        { q: "అత్యధిక వర్షపాతం నమోదయ్యే 'మౌసింరామ్' ఏ రాష్ట్రంలో ఉంది? | Mawsynram is located in which state?", options: ["అస్సాం", "మేఘాలయ | Meghalaya", "సిక్కిం", "మణిపూర్"], correct: 1 },
+        { q: "కింది వాటిలో ఏది 'అగ్ని శిల' (Igneous Rock)? | Which of the following is an Igneous Rock?", options: ["గ్రానైట్ | Granite", "సున్నపురాయి", "మార్బుల్", "బొగ్గు"], correct: 0 },
+        { q: "వాతావరణ పీడనాన్ని కొలిచే పరికరం? | Instrument used to measure atmospheric pressure?", options: ["థర్మోమీటర్", "బారోమీటర్ | Barometer", "రెయిన్ గేజ్", "లాక్టోమీటర్"], correct: 1 },
+        { q: "మొత్తం వాతావరణంలో నైట్రోజన్ శాతం ఎంత? | Percentage of Nitrogen in the atmosphere?", options: ["21%", "78%", "0.03%", "0.93%"], correct: 1 },
+        { q: "వేగంగా వీచే పవనాలను ఏమంటారు? | Fast moving winds are called?", options: ["తుఫానులు", "గాలి | Wind", "పీడనం", "తేమ"], correct: 1 },
+        { q: "సముద్ర నీటి లవణీయత (Salinity) సాధారణంగా ఎంత ఉంటుంది? | Average salinity of ocean water is?", options: ["35 ppt", "50 ppt", "20 ppt", "100 ppt"], correct: 0 },
+        { q: "ఖండ చలన సిద్ధాంతాన్ని (Continental Drift Theory) ప్రతిపాదించిన వారు? | Who proposed the Continental Drift Theory?", options: ["వెజెనర్ | Alfred Wegener", "మోర్గాన్", "హెస్", "డార్విన్"], correct: 0 },
+        { q: "అన్ని రకాల వాతావరణ మార్పులు (వర్షం, మెరుపులు) ఏ పొరలో జరుగుతాయి? | All weather changes occur in which layer?", options: ["ట్రోపో ఆవరణం | Troposphere", "స్ట్రాటో ఆవరణం", "ఐనో ఆవరణం", "ఎక్సో ఆవరణం"], correct: 0 },
+        { q: "ప్రపంచ జల దినోత్సవం (World Water Day) ఎప్పుడు? | When is World Water Day?", options: ["ఏప్రిల్ 22", "మార్చి 22 | March 22", "జూన్ 5", "సెప్టెంబర్ 16"], correct: 1 },
+        { q: "శిలలు క్రమంగా ముక్కలవడాన్ని ఏమంటారు? | Breaking down of rocks into smaller pieces is called?", options: ["శైథిల్యం | Weathering", "క్రమక్షయం", "నిక్షేపణం", "రవాణా"], correct: 0 },
+        { q: "వేడి గాలులు మరియు చల్లని గాలులు కలిసినప్పుడు ఏర్పడే వర్షం? | Rain formed when hot and cold air masses meet?", options: ["సంవహన వర్షపాతం", "చక్రీయ వర్షపాతం | Cyclonic Rain", "పర్వతీయ వర్షపాతం", "ఏదీ కాదు"], correct: 1 },
+        { q: "భూమిపై గల అతిపెద్ద మహాసముద్రం ఏది? | Which is the largest ocean on Earth?", options: ["అట్లాంటిక్", "పసిఫిక్ | Pacific", "హిందూ", "ఆర్కిటిక్"], correct: 1 },
+        { q: "ఓజోన్ పొరను దెబ్బతీసే వాయువులు ఏవి? | Which gases damage the Ozone layer?", options: ["CFCs | క్లోరోఫ్లోరో కార్బన్లు", "ఆక్సిజన్", "నైట్రోజన్", "హైడ్రోజన్"], correct: 0 },
+        { q: "భూమి ఉపరితలం నుండి 80-400 కి.మీ మధ్య ఉండే పొర? | Layer between 80-400 km from Earth's surface?", options: ["ట్రోపో", "మెసో", "థర్మో ఆవరణం | Thermosphere", "స్ట్రాటో"], correct: 2 },
+        { q: "సముద్ర నీటి మట్టం పెరగడానికి ప్రధాన కారణం (ప్రస్తుత కాలంలో)? | Main reason for sea level rise (currently)?", options: ["గ్లోబల్ వార్మింగ్ | Global Warming", "వర్షాలు", "తుఫానులు", "అగ్నిపర్వతాలు"], correct: 0 },
+        { q: "శిలావరణం (Lithosphere) అంటే ఏమిటి? | What is the Lithosphere?", options: ["గాలి పొర", "నీటి పొర", "భూమి పై పొర (శిలలు/నేల) | Outer rocky layer", "జీవరాశి"], correct: 2 },
+        { q: "గాలిలోని తేమను ఏమంటారు? | Amount of water vapor in the air is called?", options: ["పీడనం", "ఆర్ద్రత | Humidity", "ఉష్ణోగ్రత", "వర్షపాతం"], correct: 1 },
+        { q: "వ్యాపార పవనాలు (Trade Winds) ఏ పవనాల రకానికి చెందినవి? | Trade winds belong to which type of winds?", options: ["స్థానిక పవనాలు", "ప్రపంచ పవనాలు | Planetary Winds", "ఋతు పవనాలు", "ఏదీ కాదు"], correct: 1 },
+        { q: "గాలి వేగాన్ని కొలిచే పరికరం? | Instrument to measure wind speed?", options: ["బారోమీటర్", "అనిమోమీటర్ | Anemometer", "హైగ్రోమీటర్", "సీస్మోగ్రాఫ్"], correct: 1 },
+        { q: "ప్రపంచంలో అత్యంత ఎత్తైన జలపాతం ఏది? | Which is the highest waterfall in the world?", options: ["నయాగరా", "జోగ్", "ఏంజిల్ జలపాతం | Angel Falls", "విక్టోరియా"], correct: 2 },
+        { q: "సముద్ర తీరాలలో అలలు ఎందుకు ఏర్పడతాయి? | Why do waves form in oceans?", options: ["నీటి కదలిక", "గాలి రాపిడి | Wind friction", "చేపలు", "గ్రహణాలు"], correct: 1 }
+    ];
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        questions.forEach((q, index) => {
+            let optionsHtml = q.options.map((opt, i) => `
+                <div class="option-item">
+                    <label><input type="radio" name="q${index}" value="${i}"> ${opt}</label>
+                </div>
+            `).join('');
+            container.innerHTML += `<div class="question-card"><div class="question-text">${index + 1}. ${q.q}</div>${optionsHtml}</div>`;
+        });
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        let reviewHtml = "";
+        questions.forEach((q, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const userAns = selected ? parseInt(selected.value) : -1;
+            const isCorrect = userAns === q.correct;
+            if (isCorrect) score++;
+            reviewHtml += `<div class="review-card ${isCorrect ? 'correct-card' : 'wrong-card'}">
+                <p><strong>Q ${index + 1}:</strong> ${q.q}</p>
+                <p>మీ సమాధానం: ${userAns === -1 ? 'గుర్తించలేదు' : q.options[userAns]}</p>
+                ${!isCorrect ? `<p style="color:green; font-weight:bold;">సరైన సమాధానం: ${q.options[q.correct]}</p>` : ''}
+            </div>`;
+        });
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('score-val').innerText = `${((score/30)*100).toFixed(1)}%`;
+        document.getElementById('marks-summary').innerText = `మీరు 30 కి ${score} మార్కులు సాధించారు.`;
+        document.getElementById('review-container').innerHTML = reviewHtml;
+        window.scrollTo(0,0);
+    }
+
+    window.onload = renderQuestions;
+</script>
+</body>
+</html>
